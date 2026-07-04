@@ -37,6 +37,21 @@
             letter-spacing: -1px;
         }
 
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 0.9em;
+            background: #333;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: cursor-blink 0.8s ease-in-out infinite;
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         p {
             font-size: 1.2rem;
             color: #666;
@@ -119,7 +134,7 @@
 <body>
     <div class="container">
         <div class="clock" id="clock"></div>
-        <h1>Hello World</h1>
+        <h1><span id="typing-text"></span><span class="typing-cursor"></span></h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
         <p class="version">v1.1.0</p>
     </div>
@@ -139,6 +154,34 @@
         }
         updateClock();
         setInterval(updateClock, 1000);
+
+        // 打字动画效果
+        (function typeText() {
+            const text = 'Hello World';
+            const el = document.getElementById('typing-text');
+            const cursor = document.querySelector('.typing-cursor');
+            const typeSpeed = 120;  // 每个字符间隔（毫秒）
+            const pauseEnd = 2000;  // 打完后的停顿
+            let i = 0;
+
+            function type() {
+                if (i < text.length) {
+                    el.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, typeSpeed);
+                } else {
+                    // 打完一轮后，停顿再重新开始
+                    setTimeout(() => {
+                        el.textContent = '';
+                        i = 0;
+                        type();
+                    }, pauseEnd);
+                }
+            }
+
+            // 页面加载后稍等再开始
+            setTimeout(type, 500);
+        })();
 
         // 鼠标点击粒子特效
         const COLORS = [
