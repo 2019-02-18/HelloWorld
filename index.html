@@ -16,7 +16,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             cursor: pointer;
             overflow: hidden;
@@ -91,6 +91,29 @@
                 opacity: 0;
             }
         }
+
+        .ripple {
+            position: absolute;
+            pointer-events: none;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: ripple-expand 0.9s ease-out forwards;
+        }
+
+        @keyframes ripple-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-top: -75px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -125,16 +148,24 @@
         ];
 
         document.body.addEventListener('click', function(e) {
-            // 产生 12 个彩色粒子向四周飞散
-            const count = 12;
+            // 波纹扩散效果
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 900);
+
+            // 产生 18 个彩色粒子向四周飞散
+            const count = 18;
             for (let i = 0; i < count; i++) {
                 const particle = document.createElement('span');
                 particle.classList.add('particle');
-                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
-                const distance = 40 + Math.random() * 80;
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+                const distance = 50 + Math.random() * 100;
                 const dx = Math.cos(angle) * distance;
                 const dy = Math.sin(angle) * distance;
-                const size = 4 + Math.random() * 8;
+                const size = 3 + Math.random() * 10;
                 const color = COLORS[Math.floor(Math.random() * COLORS.length)];
 
                 particle.style.width = particle.style.height = size + 'px';
@@ -153,12 +184,12 @@
             spark.classList.add('spark');
             spark.style.left = e.clientX + 'px';
             spark.style.top = e.clientY + 'px';
-            spark.style.width = '20px';
-            spark.style.height = '20px';
+            spark.style.width = '24px';
+            spark.style.height = '24px';
             spark.style.background = 'radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%)';
             spark.style.borderRadius = '50%';
-            spark.style.setProperty('--dx', (Math.random() - 0.5) * 20 + 'px');
-            spark.style.setProperty('--dy', (Math.random() - 0.5) * 20 + 'px');
+            spark.style.setProperty('--dx', (Math.random() - 0.5) * 30 + 'px');
+            spark.style.setProperty('--dy', (Math.random() - 0.5) * 30 + 'px');
             spark.style.setProperty('--rot', (Math.random() * 360) + 'deg');
 
             document.body.appendChild(spark);
