@@ -37,6 +37,21 @@
             letter-spacing: -1px;
         }
 
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 3.2rem;
+            background: #333;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink-cursor 0.7s step-end infinite;
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         p {
             font-size: 1.2rem;
             color: #666;
@@ -119,7 +134,7 @@
 <body>
     <div class="container">
         <div class="clock" id="clock"></div>
-        <h1>Hello World</h1>
+        <h1 id="typing-title"></h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
         <p class="version">v1.1.0</p>
     </div>
@@ -139,6 +154,33 @@
         }
         updateClock();
         setInterval(updateClock, 1000);
+
+        // 打字动画效果
+        (function typeWriter() {
+            const el = document.getElementById('typing-title');
+            const text = 'Hello World';
+            const speed = 120; // 每个字符的间隔（毫秒）
+            let i = 0;
+
+            // 创建闪烁光标元素
+            const cursor = document.createElement('span');
+            cursor.classList.add('typing-cursor');
+            el.appendChild(cursor);
+
+            function type() {
+                if (i < text.length) {
+                    // 在光标前插入字符
+                    cursor.insertAdjacentText('beforebegin', text.charAt(i));
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // 打字完成，移除光标
+                    cursor.remove();
+                }
+            }
+
+            type();
+        })();
 
         // 鼠标点击粒子特效
         const COLORS = [
