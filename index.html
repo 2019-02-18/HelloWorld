@@ -40,6 +40,15 @@
             color: #666;
         }
 
+        .clock {
+            font-size: 1.6rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            font-variant-numeric: tabular-nums;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            letter-spacing: 2px;
+        }
+
         .version {
             margin-top: 2rem;
             font-size: 0.85rem;
@@ -49,9 +58,27 @@
 </head>
 <body>
     <div class="container">
+        <div class="clock" id="clock"></div>
         <h1>Hello World</h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
         <p class="version">v1.0.0</p>
     </div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('clock').textContent = timeStr;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 </body>
 </html>
