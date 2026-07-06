@@ -23,11 +23,47 @@
         }
 
         .container {
+            position: relative;
+            isolation: isolate;
             text-align: center;
             padding: 3rem 4rem;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 18px;
+            background: conic-gradient(
+                from 0deg,
+                #7c3aed,
+                #4f46e5,
+                #0ea5e9,
+                #06b6d4,
+                #818cf8,
+                #a78bfa,
+                #7c3aed
+            );
+            z-index: -1;
+            animation: border-spin 3s linear infinite;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: -1;
+        }
+
+        @keyframes border-spin {
+            to {
+                rotate: 1turn;
+            }
         }
 
         h1 {
