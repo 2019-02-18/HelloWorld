@@ -23,11 +23,48 @@
         }
 
         .container {
+            position: relative;
             text-align: center;
             padding: 3rem 4rem;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 19px;
+            background: conic-gradient(
+                from var(--border-angle, 0deg),
+                #ff6b6b,
+                #feca57,
+                #48dbfb,
+                #ff9ff3,
+                #54a0ff,
+                #5f27cd,
+                #01a3a4,
+                #f368e0,
+                #ffa502,
+                #7bed9f,
+                #70a1ff,
+                #ff6b6b
+            );
+            z-index: -1;
+            pointer-events: none;
+            animation: border-rotate 4s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes border-rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         h1 {
@@ -121,7 +158,7 @@
         <div class="clock" id="clock"></div>
         <h1>Hello World</h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
-        <p class="version">v1.1.0</p>
+        <p class="version">v1.2.0</p>
     </div>
     <script>
         function updateClock() {
