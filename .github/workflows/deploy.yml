@@ -2,41 +2,36 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
-  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
+      - name: Checkout HelloWorld
         uses: actions/checkout@v4
 
       - name: Checkout pages repo
         uses: actions/checkout@v4
         with:
           repository: 2019-02-18/2019-02-18.github.io
-          path: blog-repo
-          token: ${{ secrets.DEPLOY_TOKEN }}
-          fetch-depth: 0
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          path: pages-repo
 
-      - name: Copy site to hello-world
+      - name: Sync files to hello-world/
         run: |
-          mkdir -p blog-repo/hello-world
-          cp index.html blog-repo/hello-world/index.html
+          mkdir -p pages-repo/hello-world
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            ./ pages-repo/hello-world/
 
       - name: Commit and push
-        working-directory: blog-repo
-        env:
-          SOURCE_REPO: ${{ github.repository }}
-          SOURCE_SHA: ${{ github.sha }}
+        working-directory: pages-repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add hello-world/index.html
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "deploy(hello-world): update from ${SOURCE_REPO}@${SOURCE_SHA:0:7}"
-          git push origin master
+          git add hello-world/
+          git diff --cached --quiet || git commit -m "deploy: sync HelloWorld -> hello-world/ (${{ github.sha }})"
+          git push
