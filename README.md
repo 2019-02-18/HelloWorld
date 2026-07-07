@@ -13,3 +13,7 @@
 ## 技术栈
 
 - 纯 HTML/CSS 静态页面
+
+## 响应智能体
+
+项目中负责处理 issue 并产出结果的 Agent 说明，请参阅 [docs/response-agent.md](docs/response-agent.md)。
